@@ -11,11 +11,11 @@ public class GraphReader {
                 String[] parts = line.split(",");
                 if (parts.length < 2) {
                     System.err.println("Incorrect line format: " + line);
-                    continue; // пропустить некорректные строки
+                    continue;
                 }
                 String from = parts[0].trim();
                 String to = parts[1].trim();
-                long weight = (parts.length == 3) ? Long.parseLong(parts[2].trim()) : 1L; // Установить вес по умолчанию, если он отсутствует
+                long weight = (parts.length == 3) ? Long.parseLong(parts[2].trim()) : 1L;
 
                 graph.addVertex(from);
                 graph.addVertex(to);

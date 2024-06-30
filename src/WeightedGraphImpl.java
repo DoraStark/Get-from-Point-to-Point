@@ -15,7 +15,7 @@ public class WeightedGraphImpl implements WeightedGraph {
     @Override
     public void addEdge(String from, String to, long weight) {
         adjacencyList.computeIfAbsent(from, k -> new ArrayList<>()).add(new Edge(to, weight));
-        adjacencyList.computeIfAbsent(to, k -> new ArrayList<>()).add(new Edge(from, weight)); // Неориентированный граф
+        adjacencyList.computeIfAbsent(to, k -> new ArrayList<>()).add(new Edge(from, weight));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class WeightedGraphImpl implements WeightedGraph {
         }
 
         if (path.size() == 1 && !path.get(0).equals(start)) {
-            return Collections.emptyList(); // Путь не найден
+            return Collections.emptyList();
         }
         return path;
     }
