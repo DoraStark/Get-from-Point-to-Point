@@ -1,9 +1,4 @@
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.ArrayList;
+import java.util.*;
 
 public class WeightedGraphImpl implements WeightedGraph {
     private Map<String, List<Edge>> adjacencyList;
@@ -24,13 +19,11 @@ public class WeightedGraphImpl implements WeightedGraph {
 
     @Override
     public List<String> getShortestPath(String start, String end) {
-        // Реализуйте алгоритм Дейкстры здесь
         return dijkstra(start, end);
     }
 
     @Override
     public List<String> getCheapestPath(String start, String end) {
-        // Можно использовать ту же реализацию алгоритма Дейкстры, так как он предназначен для взвешенных графов
         return dijkstra(start, end);
     }
 
@@ -93,9 +86,13 @@ public class WeightedGraphImpl implements WeightedGraph {
         return new ArrayList<>(adjacencyList.keySet());
     }
 
-    private class Edge {
-        String destination;
-        int weight;
+    public List<Edge> getEdges(String vertex) {
+        return adjacencyList.get(vertex);
+    }
+
+    public class Edge {
+        public String destination;
+        public int weight;
 
         Edge(String destination, int weight) {
             this.destination = destination;
