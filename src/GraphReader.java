@@ -1,32 +1,25 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Random;
 
 public class GraphReader {
     public static WeightedGraph readGraphFromFile(String filePath) {
         WeightedGraphImpl graph = new WeightedGraphImpl();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-            Random random = new Random();
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length != 2) {
+                if (parts.length < 2) {
                     System.err.println("Incorrect line format: " + line);
                     continue; // пропустить некорректные строки
                 }
-                String stationName = parts[0].trim();
-                String stationId = parts[1].trim();
-                graph.addVertex(stationId);
+                String from = parts[0].trim();
+                String to = parts[1].trim();
+                long weight = (parts.length == 3) ? Long.parseLong(parts[2].trim()) : 1L; // Установить вес по умолчанию, если он отсутствует
 
-                // Добавление ребер со случайным весом к предыдущей станции для тестирования
-                // В реальном сценарии вам нужно будет определить, как добавлять ребра и их веса
-                if (graph.getVertices().size() > 1) {
-                    String[] vertices = graph.getVertices().toArray(new String[0]);
-                    String previousStation = vertices[vertices.length - 2];
-                    int weight = random.nextInt(100) + 1; // Случайный вес от 1 до 100
-                    graph.addEdge(previousStation, stationId, weight);
-                }
+                graph.addVertex(from);
+                graph.addVertex(to);
+                graph.addEdge(from, to, weight);
             }
         } catch (IOException e) {
             e.printStackTrace();

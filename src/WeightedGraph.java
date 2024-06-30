@@ -2,7 +2,7 @@ import java.util.List;
 
 public interface WeightedGraph {
     void addVertex(String vertex);
-    void addEdge(String from, String to, int weight);
+    void addEdge(String from, String to, long weight);
     List<String> getShortestPath(String start, String end);
     List<String> getCheapestPath(String start, String end);
     void printGraph();
@@ -11,9 +11,9 @@ public interface WeightedGraph {
 
     class Edge {
         String destination;
-        int weight;
+        long weight;
 
-        public Edge(String destination, int weight) {
+        public Edge(String destination, long weight) {
             this.destination = destination;
             this.weight = weight;
         }

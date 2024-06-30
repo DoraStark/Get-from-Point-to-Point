@@ -13,8 +13,9 @@ public class WeightedGraphImpl implements WeightedGraph {
     }
 
     @Override
-    public void addEdge(String from, String to, int weight) {
+    public void addEdge(String from, String to, long weight) {
         adjacencyList.computeIfAbsent(from, k -> new ArrayList<>()).add(new Edge(to, weight));
+        adjacencyList.computeIfAbsent(to, k -> new ArrayList<>()).add(new Edge(from, weight)); // Неориентированный граф
     }
 
     @Override
@@ -24,26 +25,24 @@ public class WeightedGraphImpl implements WeightedGraph {
 
     @Override
     public List<String> getShortestPath(String start, String end) {
-        // Реализация поиска кратчайшего пути (например, алгоритм Дейкстры)
         return dijkstra(start, end);
     }
 
     @Override
     public List<String> getCheapestPath(String start, String end) {
-        // Реализация поиска самого дешевого пути (например, алгоритм Беллмана-Форда)
         return dijkstra(start, end);
     }
 
     private List<String> dijkstra(String start, String end) {
-        Map<String, Integer> distances = new HashMap<>();
+        Map<String, Long> distances = new HashMap<>();
         Map<String, String> previous = new HashMap<>();
-        PriorityQueue<String> pq = new PriorityQueue<>(Comparator.comparingInt(distances::get));
+        PriorityQueue<String> pq = new PriorityQueue<>(Comparator.comparingLong(distances::get));
 
         for (String vertex : adjacencyList.keySet()) {
-            distances.put(vertex, Integer.MAX_VALUE);
+            distances.put(vertex, Long.MAX_VALUE);
             previous.put(vertex, null);
         }
-        distances.put(start, 0);
+        distances.put(start, 0L);
         pq.add(start);
 
         while (!pq.isEmpty()) {
@@ -51,7 +50,7 @@ public class WeightedGraphImpl implements WeightedGraph {
             if (current.equals(end)) break;
 
             for (Edge edge : getEdges(current)) {
-                int newDist = distances.get(current) + edge.weight;
+                long newDist = distances.get(current) + edge.weight;
                 if (newDist < distances.get(edge.destination)) {
                     distances.put(edge.destination, newDist);
                     previous.put(edge.destination, current);
@@ -66,7 +65,7 @@ public class WeightedGraphImpl implements WeightedGraph {
         }
 
         if (path.size() == 1 && !path.get(0).equals(start)) {
-            return Collections.emptyList(); // No path found
+            return Collections.emptyList(); // Путь не найден
         }
         return path;
     }

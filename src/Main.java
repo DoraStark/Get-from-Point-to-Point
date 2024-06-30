@@ -10,20 +10,20 @@ public class Main {
         graph.printGraph();
 
         // Рассчитываем кратчайшие времена путешествия от станции "S Schöneweide Bhf (Berlin)"
-        String startStation = "060192001006"; // используйте идентификатор станции
+        String startStation = "S Schöneweide Bhf (Berlin)"; // используйте идентификатор станции
         String[] targetStations = {
                 "60068201511", "60066102852", "60053301433", "60120003653"
         };
 
         for (String endStation : targetStations) {
             List<String> path = graph.getCheapestPath(startStation, endStation);
-            int travelTime = calculateTravelTime(graph, path);
+            long travelTime = calculateTravelTime(graph, path);
             System.out.println("Shortest travel time from " + startStation + " to " + endStation + ": " + travelTime);
         }
     }
 
-    private static int calculateTravelTime(WeightedGraph graph, List<String> path) {
-        int totalTime = 0;
+    private static long calculateTravelTime(WeightedGraph graph, List<String> path) {
+        long totalTime = 0;
         if (path == null || path.size() < 2) return totalTime;
 
         for (int i = 0; i < path.size() - 1; i++) {
