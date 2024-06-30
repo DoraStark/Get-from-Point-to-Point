@@ -7,5 +7,20 @@ public interface WeightedGraph {
     List<String> getCheapestPath(String start, String end);
     void printGraph();
     List<String> getVertices();
-    List<WeightedGraphImpl.Edge> getEdges(String node); // Объявление метода getEdges
+    List<Edge> getEdges(String node);
+
+    class Edge {
+        String destination;
+        int weight;
+
+        public Edge(String destination, int weight) {
+            this.destination = destination;
+            this.weight = weight;
+        }
+
+        @Override
+        public String toString() {
+            return destination + "(" + weight + ")";
+        }
+    }
 }
