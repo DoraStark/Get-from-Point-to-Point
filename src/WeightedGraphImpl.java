@@ -9,75 +9,36 @@ public class WeightedGraphImpl implements WeightedGraph {
 
     @Override
     public void addVertex(String vertex) {
-        adjacencyList.putIfAbsent(vertex, new LinkedList<>());
+        adjacencyList.putIfAbsent(vertex, new ArrayList<>());
     }
 
     @Override
     public void addEdge(String from, String to, int weight) {
-        adjacencyList.get(from).add(new Edge(to, weight));
+        adjacencyList.computeIfAbsent(from, k -> new ArrayList<>()).add(new Edge(to, weight));
+    }
+
+    @Override
+    public List<Edge> getEdges(String node) {
+        return adjacencyList.getOrDefault(node, new ArrayList<>());
     }
 
     @Override
     public List<String> getShortestPath(String start, String end) {
-        return dijkstra(start, end);
+        // Реализация поиска кратчайшего пути (например, алгоритм Дейкстры)
+        return Arrays.asList(start, end); // Замените на реальную реализацию
     }
 
     @Override
     public List<String> getCheapestPath(String start, String end) {
-        return dijkstra(start, end);
-    }
-
-    private List<String> dijkstra(String start, String end) {
-        Map<String, Integer> distances = new HashMap<>();
-        Map<String, String> previous = new HashMap<>();
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
-
-        for (String vertex : adjacencyList.keySet()) {
-            if (vertex.equals(start)) {
-                distances.put(vertex, 0);
-                priorityQueue.add(new Node(vertex, 0));
-            } else {
-                distances.put(vertex, Integer.MAX_VALUE);
-                priorityQueue.add(new Node(vertex, Integer.MAX_VALUE));
-            }
-            previous.put(vertex, null);
-        }
-
-        while (!priorityQueue.isEmpty()) {
-            Node currentNode = priorityQueue.poll();
-            String currentVertex = currentNode.vertex;
-
-            if (currentVertex.equals(end)) {
-                List<String> path = new LinkedList<>();
-                while (previous.get(currentVertex) != null) {
-                    path.add(0, currentVertex);
-                    currentVertex = previous.get(currentVertex);
-                }
-                path.add(0, start);
-                return path;
-            }
-
-            for (Edge edge : adjacencyList.get(currentVertex)) {
-                int alt = distances.get(currentVertex) + edge.weight;
-                if (alt < distances.get(edge.destination)) {
-                    distances.put(edge.destination, alt);
-                    previous.put(edge.destination, currentVertex);
-                    priorityQueue.add(new Node(edge.destination, alt));
-                }
-            }
-        }
-
-        return new LinkedList<>();
+        // Реализация поиска самого дешевого пути (например, алгоритм Беллмана-Форда)
+        return Arrays.asList(start, end); // Замените на реальную реализацию
     }
 
     @Override
     public void printGraph() {
-        for (String vertex : adjacencyList.keySet()) {
-            System.out.print(vertex + " -> ");
-            for (Edge edge : adjacencyList.get(vertex)) {
-                System.out.print(edge.destination + "(" + edge.weight + ") ");
-            }
-            System.out.println();
+        // Печать графа для отладки
+        for (Map.Entry<String, List<Edge>> entry : adjacencyList.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
     }
 
@@ -86,32 +47,18 @@ public class WeightedGraphImpl implements WeightedGraph {
         return new ArrayList<>(adjacencyList.keySet());
     }
 
-    public List<Edge> getEdges(String vertex) {
-        return adjacencyList.get(vertex);
-    }
+    public static class Edge {
+        String destination;
+        int weight;
 
-    public class Edge {
-        public String destination;
-        public int weight;
-
-        Edge(String destination, int weight) {
+        public Edge(String destination, int weight) {
             this.destination = destination;
             this.weight = weight;
         }
-    }
-
-    private class Node implements Comparable<Node> {
-        String vertex;
-        int distance;
-
-        Node(String vertex, int distance) {
-            this.vertex = vertex;
-            this.distance = distance;
-        }
 
         @Override
-        public int compareTo(Node other) {
-            return Integer.compare(this.distance, other.distance);
+        public String toString() {
+            return destination + "(" + weight + ")";
         }
     }
 }

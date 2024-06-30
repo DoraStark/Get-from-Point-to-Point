@@ -2,20 +2,20 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-
-        String filePath = "stations.txt";
+        // Чтение графа из файла
+        String filePath = "../stations.txt"; // путь к вашему файлу, возможно, нужно изменить
         WeightedGraph graph = GraphReader.readGraphFromFile(filePath);
 
-
+        // Печать графа для проверки
         graph.printGraph();
 
-
+        // Нахождение и печать кратчайшего пути
         PathFinder.findAndPrintShortestPath(graph);
 
-
-        String startStation = "S Schöneweide Bhf (Berlin)";
+        // Рассчитываем кратчайшие времена путешествия от станции "S Schöneweide Bhf (Berlin)"
+        String startStation = "060192001006"; // используйте идентификатор станции
         String[] targetStations = {
-                "60068201511", "60066102852", "60053301433", "60120003653"
+                "06068201511", "06066102852", "06053301433", "060120003653"
         };
 
         for (String endStation : targetStations) {
@@ -25,7 +25,7 @@ public class Main {
         }
     }
 
-
+    // Вспомогательный метод для расчета времени путешествия
     private static int calculateTravelTime(WeightedGraph graph, List<String> path) {
         int totalTime = 0;
         if (path == null || path.size() < 2) return totalTime;

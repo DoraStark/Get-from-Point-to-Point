@@ -6,5 +6,6 @@ public interface WeightedGraph {
     List<String> getShortestPath(String start, String end);
     List<String> getCheapestPath(String start, String end);
     void printGraph();
-    List<String> getVertices(); // Новый метод
+    List<String> getVertices();
+    List<WeightedGraphImpl.Edge> getEdges(String node); // Объявление метода getEdges
 }
